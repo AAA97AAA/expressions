@@ -610,7 +610,7 @@ func notequal (_ lhs: Term, _ rhs: Term) -> Map {
 }
 
 // Comparisons Evaluation:
-
+/*
 func evalLessthan( _ lhs: Term, _ rhs: Term) -> Goal{
     return
         freshn{ a in
@@ -732,7 +732,7 @@ func evalEqual( _ lhs: Term, _ rhs: Term) -> Goal{
     }
 
 }
-
+*/
 // fonction de Comparisons des nombres:
 
 // prend deux chiffres en entrée et vérifie s'ils sont égaux ou non
@@ -815,8 +815,28 @@ func lessthanvalue(_ lhs: Term, _ rhs: Term) -> Goal {
 
 // Evaluation:
 
-func evalArithmetic (input: Term, output: Term) -> Goal {
-    assert (false)
+func evalArithmetic (_ input: Term, _ output: Term) -> Goal {
+    return
+        freshn { v in
+            // pas evalues
+            let linput = ["linput"]
+            let rinput = ["rinput"]
+            // evalues
+            let linput_v = ["linput_v"]
+            let rinput_v = ["rinput_v"]
+            
+            // addition
+            (input === add(linput, rinput) && evalArithmetic(linput, linput_v) && evalArithmetic(rinput, rinput_v) && eval_add(linput_v, rinput_v, output)) ||
+            
+            // SOUSTRACTION
+            (input === subtract(linput, rinput) && evalArithmetic(linput, linput_v) && evalArithmetic(rinput, rinput_v) && eval_sub(linput_v, rinput_v, output)) ||
+            
+            // Multiplication
+            (input === multiply(linput, rinput) && evalArithmetic(linput, linput_v) && evalArithmetic(rinput, rinput_v) && eval_mult(linput_v, rinput_v, output)) ||
+            
+            // Division
+            (input === divide(linput, rinput) && evalArithmetic(linput, linput_v) && evalArithmetic(rinput, rinput_v) && eval_div(linput_v, rinput_v, output)) ||
+    }
 }
 
 func evalBoolean (_ input: Term, _ output: Term) -> Goal {
@@ -933,7 +953,8 @@ func evalBoolean (_ input: Term, _ output: Term) -> Goal {
 
 
 func evalComparison (input: Term, output: Term) -> Goal {
-    return
+    assert (false)
+        /*
         delayed(
            (input === t && output === t) ||
             (input === f && output === f) ||
@@ -955,7 +976,7 @@ func evalComparison (input: Term, output: Term) -> Goal {
                 (input === greaterthan(lhs, rhs)  && ((greaterthanvalue(lhs, rhs) && output === t) || lessequal(lhs, rhs) === f)) ||
                 
                 // greaterequal
-                (input === greaterequal(lhs, rhs)  && ((greaterequalvalue(lhs, rhs) && output === t) || lessethanqual(lhs, rhs) === f))  ||
+                (input === greaterequal(lhs, rhs)  && ((greaterequalvalue(lhs, rhs) && output === t) || lessthanvalue(lhs, rhs) === f))  ||
                 
                 
                 // equal
@@ -966,9 +987,12 @@ func evalComparison (input: Term, output: Term) -> Goal {
                 
 
             }
+     
+      )
+            */
 
             
-        )
+    
 }
 
 
