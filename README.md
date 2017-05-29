@@ -24,8 +24,10 @@ You **must** add tests!
 
 * Have you done something? yes
 * Does your code compile? no
-* Do your tests succeeds? no
-* Have you added more tests? a bit
+* Do your tests succeeds?
+* Have you added more tests? some
+* Do the automatic tests succeed? no
+* Have you written the semantics as inference rules? some
 
 | Grade |
 | ----- |
