@@ -22,6 +22,11 @@ You **must** add tests!
 
 ## Grade
 
+* Have you done something? yes
+* Does your code compile? no
+* Do your tests succeeds? no
+* Have you added more tests? a bit
+
 | Grade |
 | ----- |
-|       |
+|   2   |
