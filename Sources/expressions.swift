@@ -609,132 +609,9 @@ func notequal (_ lhs: Term, _ rhs: Term) -> Map {
             ]
 }
 
-// Comparisons Evaluation:
-/*
-func evalLessthan( _ lhs: Term, _ rhs: Term) -> Goal{
-    return
-        freshn{ a in
-            let lhead = a["lhead"]
-            let ltail = a["ltail"]
-            let rhead = a["rhead"]
-            let rtail = a["rtail"]
-    
-            return
-                    (lhs === List.cons(lhead, ltail)) &&
-                    (rhs === List.cons(rhead, rtail)) &&
-                    lessthanvalue(lhead, rhead) &&
-                    (equal(ltail, rtail))
-    }
-}
 
-func evalLessequal( _ lhs: Term, _ rhs: Term) -> Goal{
-    return
-        freshn{ a in
-            let lhead = a["lhead"]
-            let ltail = a["ltail"]
-            let rhead = a["rhead"]
-            let rtail = a["rtail"]
-            
-            return
-                    (lhs === List.cons(lhead, ltail)) &&
-                    (rhs === List.cons(rhead, rtail)) &&
-                    lessequalvalue(lhead, rhead) &&
-                    (equal(ltail, rtail))
-            
-            
-            
-    }
-
-}
-
-func evalGreaterthan( _ lhs: Term, _ rhs: Term) -> Goal{
-    return
-        freshn{ a in
-            let lhead = a["lhead"]
-            let ltail = a["ltail"]
-            let rhead = a["rhead"]
-            let rtail = a["rtail"]
-            
-            return
-                    (lhs === List.cons(lhead, ltail)) &&
-                    (rhs === List.cons(rhead, rtail)) &&
-                    greaterthanvalue(lhead, rhead) &&
-                    (equal(ltail, rtail))
-            
-            
-    }
-
-}
-
-
-func evalGreaterequal( _ lhs: Term, _ rhs: Term) -> Goal{
-    return
-        freshn{ a in
-            let lhead = a["lhead"]
-            let ltail = a["ltail"]
-            let rhead = a["rhead"]
-            let rtail = a["rtail"]
-            
-            return
-                    (lhs === List.cons(lhead, ltail)) &&
-                    (rhs === List.cons(rhead, rtail)) &&
-                    greaterequalvalue(lhead, rhead) &&
-                    (equal(ltail, rtail))
-            
-            
-            
-    }
-
-}
- 
-
-
-
-func notequal( _ lhs: Term, _ rhs: Term) -> Goal{
-    return
-        freshn{ a in
-            let lhead = a["lhead"]
-            let ltail = a["ltail"]
-            let rhead = a["rhead"]
-            let rtail = a["rtail"]
-            
-            return
-                    (lhs === List.cons(lhead, ltail)) &&
-                    (rhs === List.cons(rhead, rtail)) &&
-                    differentvalue(lhead, rhead) &&
-                    (equal(ltail, rtail))
-
-            
-            
-    }
-
-}
-
-
-
-
-func evalEqual( _ lhs: Term, _ rhs: Term) -> Goal{
-    return
-        freshn{ a in
-            let lhead = a["lhead"]
-            let ltail = a["ltail"]
-            let rhead = a["rhead"]
-            let rtail = a["rtail"]
-            
-            return
-                (lhs === List.cons(lhead, ltail)) &&
-                (rhs === List.cons(rhead, rtail)) &&
-                samevalue(lhead, rhead) &&
-                (equal(ltail, rtail))
-            
-            
-            
-    }
-
-}
-*/
 // fonction de Comparisons des nombres:
-
+// LES FONCTIONS CI DESSOUS SONT UTILISES DANS LES FONCTIONS QUI EVALUENT LES MAP ENTREES PAR L'UTILISATEUR
 // prend deux chiffres en entrée et vérifie s'ils sont égaux ou non
 func samevalue(_ lhs: Term, _ rhs: Term) -> Goal {
     var sol: Goal = (t === f)// tant que ce n'est pas vraie, c'est faux
@@ -815,31 +692,30 @@ func lessthanvalue(_ lhs: Term, _ rhs: Term) -> Goal {
 
 // Evaluation:
 
-func evalArithmetic (_ input: Term, _ output: Term) -> Goal {
+func evalArithmetic (input: Term,  output: Term) -> Goal {
+
     return
-        freshn { v in
-            // pas evalues
-            let linput = ["linput"]
-            let rinput = ["rinput"]
-            // evalues
-            let linput_v = ["linput_v"]
-            let rinput_v = ["rinput_v"]
+        delayed(
+            
+        fresh { linput in fresh  { rinput in fresh  { linput_v in fresh  { rinput_v in // v in
+            // linput et rinput n'ont pas encore ete evalués
+            // linput_v et rinput_v sont des valeurs deja evalués
             
             // addition
-            (input === add(linput, rinput) && evalArithmetic(linput, linput_v) && evalArithmetic(rinput, rinput_v) && eval_add(linput_v, rinput_v, output)) ||
+            (input === add(linput, rinput) && evalArithmetic(input: linput,output: linput_v) && evalArithmetic(input: rinput, output: rinput_v) && eval_add(linput_v, rinput_v, output)) ||
             
-            // SOUSTRACTION
-            (input === subtract(linput, rinput) && evalArithmetic(linput, linput_v) && evalArithmetic(rinput, rinput_v) && eval_sub(linput_v, rinput_v, output)) ||
+           // SOUSTRACTION
+                (input === subtract(linput, rinput) && evalArithmetic(input: linput, output: linput_v) && evalArithmetic( input: rinput, output: rinput_v) && eval_sub(linput_v, rinput_v, output)) ||
             
             // Multiplication
-            (input === multiply(linput, rinput) && evalArithmetic(linput, linput_v) && evalArithmetic(rinput, rinput_v) && eval_mult(linput_v, rinput_v, output)) ||
+            (input === multiply(linput, rinput) && evalArithmetic(input: linput, output: linput_v) && evalArithmetic(input: rinput, output: rinput_v) && eval_mult(linput_v, rinput_v, output)) ||
             
             // Division
-            (input === divide(linput, rinput) && evalArithmetic(linput, linput_v) && evalArithmetic(rinput, rinput_v) && eval_div(linput_v, rinput_v, output)) ||
-    }
+            (input === divide(linput, rinput) && evalArithmetic(input: linput, output: linput_v) && evalArithmetic(input: rinput, output: rinput_v) && eval_div(linput_v, rinput_v, output))
+    }}}})
 }
 
-func evalBoolean (_ input: Term, _ output: Term) -> Goal {
+func evalBoolean ( input: Term,  output: Term) -> Goal {
     return
         delayed(
             // si l'entrée et la sortie sont True (ils ont été évalués), on renvoie true
@@ -858,7 +734,7 @@ func evalBoolean (_ input: Term, _ output: Term) -> Goal {
                     // decomposition
                     return input === not(what) &&
                         // evaluation (ici si what est une autre expression, il sera bien traité)
-                        evalBoolean(what, what_v) &&
+                        evalBoolean(input:what, output: what_v) &&
                         // on donne le resultat
                         (   // false renvoie true
                             (what_v === f && output === t) ||
@@ -881,8 +757,8 @@ func evalBoolean (_ input: Term, _ output: Term) -> Goal {
                     // decomposition
                     return input === and(lhs, rhs) &&
                         // evaluation (ici si lhs est une autre expression, il sera bien traité, de même pour rhs et pour toutes les rappels de evalBoolean ci-dessous)
-                        evalBoolean(lhs, lhs_v) &&
-                        evalBoolean(rhs, rhs_v) &&
+                        evalBoolean(input: lhs, output: lhs_v) &&
+                        evalBoolean(input: rhs, output: rhs_v) &&
                         // on donne le resultat
                         (   // si l'un des deux est false, le resultat est false
                             (lhs_v === f && output === f) ||
@@ -905,8 +781,8 @@ func evalBoolean (_ input: Term, _ output: Term) -> Goal {
                     // decomposition
                     return input === or(lhs, rhs) &&
                         // evaluation
-                        evalBoolean(lhs, lhs_v) &&
-                        evalBoolean(rhs, rhs_v) &&
+                        evalBoolean(input: lhs, output: lhs_v) &&
+                        evalBoolean(input: rhs, output: rhs_v) &&
                         // on donne le resultat
                         (   // si l'un des deux est false, le resultat est l'évaluation du second element
                             (lhs_v === f && output === rhs_v) ||
@@ -929,8 +805,8 @@ func evalBoolean (_ input: Term, _ output: Term) -> Goal {
                     // decomposition
                     return input === or(lhs, rhs) &&
                         // evaluation
-                        evalBoolean(lhs, lhs_v) &&
-                        evalBoolean(rhs, rhs_v) &&
+                        evalBoolean(input: lhs, output: lhs_v) &&
+                        evalBoolean(input: rhs, output: rhs_v) &&
                         // on donne le resultat
                         (       // True implique true : true
                             (lhs === t && rhs === t && output === t) ||
@@ -950,15 +826,143 @@ func evalBoolean (_ input: Term, _ output: Term) -> Goal {
         )
 }
 
+// Comparisons Evaluation:
+//**********************************************************************
+// Les fonctions ci-dessous sont utilisés pour évaluer les Comparisons
+func evalLessThan( _ lhs: Term, _ rhs: Term) -> Goal{
+    return
+        freshn{ a in
+            let lhead = a["lhead"]
+            let ltail = a["ltail"]
+            let rhead = a["rhead"]
+            let rtail = a["rtail"]
+            
+            return
+                (lhs === List.cons(lhead, ltail)) &&
+                    (rhs === List.cons(rhead, rtail)) &&
+                    lessthanvalue(lhead, rhead) &&
+                    (evalLessThan(ltail, rtail))
+    }
+}
+
+func evalLessEqual( _ lhs: Term, _ rhs: Term) -> Goal{
+    return
+        freshn{ a in
+            let lhead = a["lhead"]
+            let ltail = a["ltail"]
+            let rhead = a["rhead"]
+            let rtail = a["rtail"]
+            
+            return
+                (lhs === List.cons(lhead, ltail)) &&
+                    (rhs === List.cons(rhead, rtail)) &&
+                    lessequalvalue(lhead, rhead) &&
+                    ((evalEqual(ltail, rtail)) || (evalLessThan(ltail, rtail)))
+            
+            
+            
+    }
+    
+}
+
+func evalGreaterThan( _ lhs: Term, _ rhs: Term) -> Goal{
+    return
+        freshn{ a in
+            let lhead = a["lhead"]
+            let ltail = a["ltail"]
+            let rhead = a["rhead"]
+            let rtail = a["rtail"]
+            
+            return
+                (lhs === List.cons(lhead, ltail)) &&
+                    (rhs === List.cons(rhead, rtail)) &&
+                    greaterthanvalue(lhead, rhead) &&
+                    (evalGreaterThan(ltail, rtail))
+            
+            
+    }
+    
+}
+
+
+func evalGreaterEqual( _ lhs: Term, _ rhs: Term) -> Goal{
+    return
+        freshn{ a in
+            let lhead = a["lhead"]
+            let ltail = a["ltail"]
+            let rhead = a["rhead"]
+            let rtail = a["rtail"]
+            
+            return
+                (lhs === List.cons(lhead, ltail)) &&
+                    (rhs === List.cons(rhead, rtail)) &&
+                    greaterequalvalue(lhead, rhead) &&
+                    ((evalEqual(ltail, rtail)) || (evalGreaterThan(ltail, rtail)))
+            
+            
+            
+    }
+    
+}
+
+
+
+
+func evalNotEqual( _ lhs: Term, _ rhs: Term) -> Goal{
+    return
+        freshn{ a in
+            let lhead = a["lhead"]
+            let ltail = a["ltail"]
+            let rhead = a["rhead"]
+            let rtail = a["rtail"]
+            
+            return
+                (lhs === List.cons(lhead, ltail)) &&
+                    (rhs === List.cons(rhead, rtail)) &&
+                    differentvalue(lhead, rhead) &&
+                    (evalNotEqual(ltail, rtail))
+            
+            
+            
+    }
+    
+}
+
+
+
+
+func evalEqual( _ lhs: Term, _ rhs: Term) -> Goal{
+    return
+        freshn{ a in
+            let lhead = a["lhead"]
+            let ltail = a["ltail"]
+            let rhead = a["rhead"]
+            let rtail = a["rtail"]
+            
+            return
+                (lhs === List.cons(lhead, ltail)) &&
+                    (rhs === List.cons(rhead, rtail)) &&
+                    samevalue(lhead, rhead) &&
+                    (evalEqual(ltail, rtail))
+            
+            
+            
+    }
+    
+}
+//**********************************************************************
+
 
 
 func evalComparison (input: Term, output: Term) -> Goal {
-    assert (false)
-        /*
+    return
+    
         delayed(
+            
+            /*
            (input === t && output === t) ||
             (input === f && output === f) ||
-            
+            */
             // lessthan
             freshn{ v in
             let lhs = v["lhs"]
@@ -966,30 +970,33 @@ func evalComparison (input: Term, output: Term) -> Goal {
 
             // decomposition
             return
-                // lessthan
-                (input === lessthan(lhs, rhs)  && ((lessthanvalue(lhs, rhs) && output === t) || greaterequal(lhs, rhs) === f)) ||
                 
-                // lessequal
-                (input === lessequal(lhs, rhs)  && ((lessequalvalue(lhs, rhs) && output === t) || greaterthan(lhs, rhs) === f)) ||
+                                // lessthan
+                                (input === lessthan(lhs, rhs)  && evalLessThan(lhs, rhs)) ||
                 
-                // greaterthan
-                (input === greaterthan(lhs, rhs)  && ((greaterthanvalue(lhs, rhs) && output === t) || lessequal(lhs, rhs) === f)) ||
+                                // lessequal
+                                (input === lessequal(lhs, rhs)  && (evalLessThan(lhs, rhs) || evalEqual(lhs, rhs))) ||
                 
-                // greaterequal
-                (input === greaterequal(lhs, rhs)  && ((greaterequalvalue(lhs, rhs) && output === t) || lessthanvalue(lhs, rhs) === f))  ||
+                                // greaterthan
+                                (input === greaterthan(lhs, rhs)  && evalGreaterThan(lhs, rhs)) ||
+                
+                                // greaterequal
+                                (input === greaterequal(lhs, rhs)  && (evalGreaterThan(lhs, rhs) || evalEqual(lhs, rhs)))  ||
                 
                 
-                // equal
-                (input === equal(lhs, rhs)  && ((samevalue(lhs, rhs) && output === t) || differentvalue(lhs, rhs) === f)) ||
+                                // equal
+                                (input === equal(lhs, rhs)  && evalEqual(lhs, rhs)) ||
+                                
+                                // notequal
+                                (input === notequal(lhs, rhs)  && evalNotEqual(lhs, rhs))
                 
-                // notequal
-                (input === notequal(lhs, rhs)  && ((differentvalue(lhs, rhs) && output === t) || samevalue(lhs, rhs) === f))
                 
+  
 
             }
      
       )
-            */
+ 
 
             
     
@@ -999,5 +1006,18 @@ func evalComparison (input: Term, output: Term) -> Goal {
 // Main evaluation:
 
 func eval (input: Term, output: Term) -> Goal {
-    assert (false)
+    return
+        evalArithmetic(input: input, output: output)
+            ||
+        evalBoolean ( input: input,  output: output)
+       //     ||
+       // evalComparison (input: Term, output: Term)
+    
+    /* probleme dans cette fonction:
+  
+    Je n'arrive pas à inclure la fonction eval Comparisons: cf l'image sur github qui me dit l'erreur.arrive
+ 
+ */
+    
+    
 }
